@@ -117,6 +117,7 @@
 
 .cart_container {
   margin-top: -8px;
+  margin-right: 5px;
   display: grid;
   padding-top: 14px;
   height: 40px;
