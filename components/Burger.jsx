@@ -17,6 +17,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import Link from 'next/link';
+import Image from "next/image";
 
 const Burger = () => {
   const [state, setState] = useState({
@@ -216,7 +217,10 @@ const Burger = () => {
         className={`${styles.burger_button_style} ${isScrolledUp ? styles.scrolled : ''}`}
         onClick={toggleDrawer('left', true)}
       >
-        <MenuIcon />
+    <Image className={styles.scrolled}
+            width="20px"
+            height="20px"
+            src={isScrolledUp ? "/hamburgerwhite.svg" : "/hamburger.svg"} alt="Restaurant Image" />
       </Button>
       <Drawer anchor="left" open={state.left} onClose={toggleDrawer('left', false)}>
         {list('left')}
