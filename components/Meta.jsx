@@ -12,7 +12,7 @@ const Meta = ({ title, keywords, description }) => {
 };
 
 Meta.defaultProps = {
-  title: "Lyfeats.com",
+  title: "lyfteats.vercel.app",
   keywords: "restaurant, order, web application, NextJs App, customer order",
   description: "Lyfeats, where small restaurants grow, and generate community",
 };
