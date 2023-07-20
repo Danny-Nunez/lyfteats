@@ -52,14 +52,14 @@ const About = () => {
           textContent="This project is the final capstone of the MIT - Full Stack Development With MERN. The restaurant application consists on building the basics of an eCommerce-like Web App, that allows it users to order dishes from a list of restaurants. Each restaurant has different dishes, prices, and much more."
         />
         <Article
-          title="What can you do in OrderQue?"
+          title="What can you do in Lyfteats?"
           textContent={`My version of this project, is an extension of the original requirements, where a user cannot only sign up as a regular user, but also as a Restaurant. While logged in as a restaurant, the user has the capability to customize the dishes by adding, deleting, updating the images of the dishes or the restaurant itself. I based this approach on many other eCommerce solutions, where anyone can sign up, sell or buy. This creates a very dynamic marketplace, where you can experiment how is to have a functional business.`}
         />
         <Article title="Tech Specs" listArray={specList} />
         <div className={styles.links_container}>
           <span>
             Check out the GitHub Repo:{" "}
-            <Link href="https://github.com/anthgrim/OrderQue">
+            <Link href="https://github.com/Danny-Nunez/lyfteats">
               <a className={styles.link} rel="noreferrer" target="_blank">
                 HERE
               </a>

@@ -11,6 +11,7 @@ const StoreOrders = () => {
   const [targetOrder, setTargetOrder] = useState(null);
   const axiosPrivate = useAxiosPrivate();
   const { currentUser } = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -31,15 +32,25 @@ const StoreOrders = () => {
 
   const focusOrder = (orderData) => {
     setTargetOrder(orderData);
+    openModal();
   };
 
-  const ordersList = orders.length === 0 ? (
-    <p>No orders have been placed yet</p>
-  ) : (
-    orders.map((order) => (
-      <OrderITem key={order._id} orderData={order} onFocus={focusOrder} />
-    ))
-  );
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const ordersList =
+    orders.length === 0 ? (
+      <p>No orders have been placed yet</p>
+    ) : (
+      orders.map((order) => (
+        <OrderITem key={order._id} orderData={order} onFocus={focusOrder} />
+      ))
+    );
 
   const totalOrders = orders.length;
   const maxOrders = 100; // Set the maximum number of orders as desired
@@ -55,19 +66,18 @@ const StoreOrders = () => {
 
   return (
     <div className={styles.main}>
-       <div>
-      <GaugeChart
-        id="gauge-chart2"
-        style={chartStyle}
-        nrOfLevels={20}
-        percent={percent}
-        hideText={true}
-        textColor="#000000"
-        colors={['#EA4228', '#F5CD19', '#5BE12C']}
-        
-      />
-      <span className={styles.meter}>Total Sales: ${totalSales}</span>
-    </div>
+      <div>
+        <GaugeChart
+          id="gauge-chart2"
+          style={chartStyle}
+          nrOfLevels={20}
+          percent={percent}
+          hideText={true}
+          textColor="#000000"
+          colors={["#EA4228", "#F5CD19", "#5BE12C"]}
+        />
+        <span className={styles.meter}>Total Sales: ${totalSales}</span>
+      </div>
       <h1 className={styles.title}>Store Orders</h1>
       <div className={styles.content}>
         <div>
@@ -78,15 +88,26 @@ const StoreOrders = () => {
               <span>Date</span>
               <span>Total</span>
             </div>
-            <div className={styles.divider}> </div>
+            <div className={styles.divider}></div>
           </div>
           <div className={styles.list_container}>{ordersList}</div>
         </div>
-        {targetOrder && <FocusedOrder orderData={targetOrder} />}
+        {isModalOpen && (
+          <div className={styles.modal_overlay} onClick={closeModal}>
+            <div className={styles.modal_container}>
+              <button className={styles.close_icon} onClick={closeModal}>
+                X
+              </button>
+              <h1 className={styles.modal_title}>Order Details</h1>
+              {targetOrder && <FocusedOrder orderData={targetOrder} />}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default StoreOrders;
+
 
