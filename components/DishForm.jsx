@@ -209,8 +209,8 @@ const DishForm = ({ formToggler, listSetter, dishObject }) => {
         <label className={styles.label} htmlFor="description">
           Description
         </label>
-        <input
-          className={styles.input}
+        <textarea
+          className={styles.inputbig}
           type="text"
           name="description"
           id="description"

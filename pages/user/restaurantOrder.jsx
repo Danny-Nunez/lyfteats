@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CardDish from "../../components/CardDish";
-import SearchBar from "../../components/SearchBar";
+import SearchDishBar from "../../components/SearchDishBar";
 import { toast } from "react-toastify";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
@@ -56,7 +56,7 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
         <h2>Our delicious dishes!</h2>
         
         {dishes.length > 0 ? (
-          <SearchBar
+          <SearchDishBar
             onSearch={onSearch}
             onClear={onClearSearch}
             list={dishes}

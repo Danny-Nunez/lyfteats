@@ -78,10 +78,11 @@ const RestaurantDishes = () => {
       <></>
     ) : (
       dishes?.map((dish, index) => {
+        const truncatedDescription = dish.description.length > 25 ? dish.description.slice(0, 25) + "..." : dish.description;
         return (
           <Dish
             key={index}
-            dishData={dish}
+            dishData={{ ...dish, description: truncatedDescription }}
             listSetter={listSetter}
             onEdit={onEditDishToggler}
           />
@@ -91,7 +92,7 @@ const RestaurantDishes = () => {
 
   return (
     <>
-      <div>
+      <div className={styles.admin_wrapper}>
         <h3>My Dishes</h3>
         {isFormOpen ? (
           <DishForm
@@ -126,3 +127,4 @@ const RestaurantDishes = () => {
 };
 
 export default RestaurantDishes;
+
