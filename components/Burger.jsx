@@ -212,14 +212,14 @@ const Burger = () => {
   );
 
   return (
-    <div className={`${styles.burger_wrap} ${isScrolledUp ? styles.scrolled : ''}`}>
+    <div className={styles.burger_wrap}>
       <Button
-        className={`${styles.burger_button_style} ${isScrolledUp ? styles.scrolled : ''}`}
+        className={styles.burger_button_style}
         onClick={toggleDrawer('left', true)}
       >
-    <Image className={styles.scrolled}
-            width="20px"
-            height="20px"
+    <Image
+            width="25px"
+            height="25px"
             src={isScrolledUp ? "/hamburgerwhite.svg" : "/hamburger.svg"} alt="Restaurant Image" />
       </Button>
       <Drawer anchor="left" open={state.left} onClose={toggleDrawer('left', false)}>
