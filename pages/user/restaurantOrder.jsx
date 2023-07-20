@@ -3,6 +3,7 @@ import CardDish from "../../components/CardDish";
 import SearchBar from "../../components/SearchBar";
 import { toast } from "react-toastify";
 import styles from "../../styles/Home.module.css";
+import Image from "next/image";
 
 const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
   const [search, setSearch] = useState(null);
@@ -32,7 +33,7 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
   const onClearSearch = () => setSearch(null);
 
   useEffect(() => {
-    console.log("Restaurant Image Source:", restaurantImage);
+   
   }, [restaurantImage]);
 
   return (
@@ -41,7 +42,10 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
       <div className={styles.logo_wrapper}>
         <div className={styles.logo_image}>
           {restaurantImage && (
-            <img src={restaurantImage.replace("mitcapstone.", "")} alt="Restaurant Image" />
+            <Image 
+            width="150px"
+            height="150px"
+            src={restaurantImage.replace("mitcapstone.", "")} alt="Restaurant Image" />
           )}
         </div>
         <div className={styles.titles}>

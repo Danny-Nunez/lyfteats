@@ -18,6 +18,10 @@
 }
 .burger_wrap {
   background-color: rgba(0, 0, 0, 0);
+  text-decoration: none;
+}
+.burger_wrap a {
+  text-decoration: none;
 }
 .burger_link a {
   text-decoration: none;
