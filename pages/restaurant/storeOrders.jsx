@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import OrderITem from "../../components/OrderITem";
-import GaugeChart from 'react-gauge-chart'
+import dynamic from "next/dynamic";
 import FocusedOrder from "../../components/FocusedOrder";
 import styles from "../../styles/MyOrders.module.css";
 import AuthContext from "../../context/AuthProvider";
@@ -51,6 +51,7 @@ const StoreOrders = () => {
   };
 
   const totalSales = orders.reduce((total, order) => total + order.total, 0);
+  const GaugeChart = dynamic(() => import("react-gauge-chart"), { ssr: false });
 
   return (
     <div className={styles.main}>
