@@ -1,0 +1,15 @@
+.footer {
+  color: white;
+  
+  background-color: var(--color-primary);
+ 
+}
+
+.footer_subsection {
+ padding: 10px;
+  text-align: center;
+  
+  
+  
+}
+

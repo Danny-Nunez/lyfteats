@@ -1,0 +1,91 @@
+.burger_user {
+  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(111, 111, 111);
+  padding-bottom: 5px;
+}
+.burger_restMenu {
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.burger_button_style {
+ color:rgb(0, 0, 0)
+}
+.scrolled {
+  color: #fff;
+}
+.burger_wrap {
+  background-color: rgba(0, 0, 0, 0);
+}
+.burger_link a {
+  text-decoration: none;
+  color: black;
+  
+}
+.burger_link  {
+  text-decoration: none;
+  color: rgb(118, 118, 118);
+  display: inline-flex;
+  width: 220px;
+}
+.burger_link span  {
+  padding-top: 4px;
+  padding-left: 28px;
+  font-weight: 600;
+  color: black;
+}
+.burger_link_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid rgb(177, 177, 177);
+  width: 220px;
+  padding: 15px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.burger_link_button:hover {
+  background-color: rgb(228, 228, 228);
+}
+.burger_link_button_login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 1px solid rgb(0, 0, 0);
+  width: 220px;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: black;
+  cursor: pointer;
+}
+.burger_link_button_login:hover {
+  background-color: rgb(37, 37, 37);
+}
+.burger_MobileMenu {
+  display: none;
+}
+.burger_link_button span  {
+  padding-top: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  color: black;
+}
+.burger_link_button_login span  {
+  padding-top: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+}
+@media screen and (max-width: 820px) {
+  .burger_MobileMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
