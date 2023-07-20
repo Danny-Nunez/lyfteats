@@ -49,7 +49,7 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
         <p>{restaurant.description}</p>
         </div>
         </div>
-        
+        <h2>Our delicious dishes!</h2>
         
         {dishes.length > 0 ? (
           <SearchBar
@@ -74,7 +74,7 @@ export async function getServerSideProps(context) {
   const api =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://www.orderque.com";
+      : "https://lyfteats.vercel.app/";
 
   const restaurantResponse = await fetch(
     `${api}/api/home/restaurant?restaurantId=${restaurantId}`,
