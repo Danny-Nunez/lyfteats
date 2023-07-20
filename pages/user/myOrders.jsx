@@ -33,6 +33,7 @@ const MyOrders = () => {
 
   return (
     <div className={styles.main}>
+      <div className={styles.section_container}>
       <h1 className={styles.title}>My Orders</h1>
       <div className={styles.content}>
         <div>
@@ -47,7 +48,11 @@ const MyOrders = () => {
           </div>
           <div className={styles.list_container}>{ordersList}</div>
         </div>
-        {targetOrder && <FocusedOrder orderData={targetOrder} />}
+        <div className={styles.focus_container}>
+         {targetOrder && <FocusedOrder orderData={targetOrder} />} 
+        
+        </div>
+      </div>
       </div>
     </div>
   );
