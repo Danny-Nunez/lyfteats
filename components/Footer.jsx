@@ -8,7 +8,7 @@ return (
 <footer className={styles.footer}>
 <div className={styles.footer_section}>
 <div className={styles.footer_subsection}>
-<span>© {currentYear} - Lyfeat</span>
+<span>© {currentYear} - Lyfteats</span>
 </div>
 </div>
 </footer>

@@ -47,6 +47,7 @@ export default async function handler(req, res) {
               _id: res._id,
               name: res.name,
               description: res.description,
+              address: res.address || "", // Include the address field
               image: res.image || "",
             };
           })

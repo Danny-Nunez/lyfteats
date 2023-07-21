@@ -5,7 +5,9 @@
 .titles {
   padding-left: 10px;
   margin-top: -10px;
- 
+}
+.logo_imageMobile{
+  display: none;
 }
 .logo_wrapper {
   display: flex;
@@ -57,11 +59,12 @@
   .list {
     margin-top: 480px;
   }
-}
+  
 @media (max-width: 420px) {
   .main {
     padding: 50px 30px;
   }
+ 
   .list {
     margin-top: 240px;
   }
@@ -86,4 +89,14 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+  .logo_image {
+    display: none;
+  }
+  .logo_imageMobile{
+    display: inline-block;
+  }
+  .logo_imageMobile img{
+    border-radius: 5px;
+  }
+}
 }

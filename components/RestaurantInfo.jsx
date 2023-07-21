@@ -10,6 +10,7 @@ const RestaurantInfo = () => {
   const [error, setError] = useState({
     name: { error: "", isError: false },
     description: { error: "", isError: false },
+    address: { error: "", isError: false },
   });
   const [imageURL, setImageURL] = useState("");
   let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
@@ -44,7 +45,7 @@ const RestaurantInfo = () => {
 
   // Handle restaurant information update
   const handleUpdate = async () => {
-    const { name, description } = restaurantData;
+    const { name, description, address } = restaurantData;
     let errors = false;
 
     // Validate inputs
@@ -73,13 +74,28 @@ const RestaurantInfo = () => {
       }));
     }
 
-    // Return if there's any errors
+    // Address
+    if (!address || address.trim() === "") {
+      errors = true;
+      setError((prev) => ({
+        ...prev,
+        address: { error: "Address cannot be empty", isError: true },
+      }));
+    } else {
+      setError((prev) => ({
+        ...prev,
+        address: { error: "", isError: false },
+      }));
+    }
+
+    // Return if there are any errors
     if (errors) return;
 
     try {
       const response = await axiosPrivate.put("/api/restaurant/update", {
         name,
         description,
+        address,
       });
 
       setRestaurantData(response.data.restaurant);
@@ -93,16 +109,16 @@ const RestaurantInfo = () => {
   // Handle restaurant image update
   const handleFileChange = async (file) => {
     try {
-      // Upload image to s3 bucket
+      // Upload image to S3 bucket
       let s3Response = await uploadToS3(file);
       setImageURL(s3Response.url);
 
-      // Delete previous image in s3
+      // Delete previous image in S3
       const deleteRes = await axiosPrivate.delete(
         "/api/restaurant/deletePrevKey"
       );
 
-      // If delete response is ok then update image url and key in db
+      // If delete response is ok, then update the image URL and key in the database
       if (deleteRes.data.message === "OK") {
         const updateRes = await axiosPrivate.put("/api/restaurant/updateLogo", {
           url: s3Response.url,
@@ -135,7 +151,7 @@ const RestaurantInfo = () => {
               name="name"
               id="name"
               value={restaurantData?.name || ""}
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
             {error.name.isError && (
               <span className={styles.error}>{error.name.error}</span>
@@ -151,10 +167,26 @@ const RestaurantInfo = () => {
               name="description"
               id="description"
               value={restaurantData?.description || ""}
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
             />
             {error.description.isError && (
               <span className={styles.error}>{error.description.error}</span>
+            )}
+          </div>
+          <div className={styles.section}>
+            <label className={styles.label} htmlFor="address">
+              Address
+            </label>
+            <input
+              className={styles.form_input}
+              type="text"
+              name="address"
+              id="address"
+              value={restaurantData?.address || ""}
+              onChange={handleChange}
+            />
+            {error.address.isError && (
+              <span className={styles.error}>{error.address.error}</span>
             )}
           </div>
         </div>
@@ -167,15 +199,14 @@ const RestaurantInfo = () => {
             Update Logo
           </button>
           {imageURL && (
-  <Image
-    src={imageURL.replace('mitcapstone.', '')}
-    width="300px"
-    height="400px"
-    alt="restaurant image"
-    loading="lazy"
-  />
-)}
-
+            <Image
+              src={imageURL.replace("mitcapstone.", "")}
+              width="300px"
+              height="400px"
+              alt="restaurant image"
+              loading="lazy"
+            />
+          )}
         </section>
       </div>
     </>
@@ -183,3 +214,4 @@ const RestaurantInfo = () => {
 };
 
 export default RestaurantInfo;
+

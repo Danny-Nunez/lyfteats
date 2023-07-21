@@ -109,7 +109,7 @@ background-color: rgb(255, 237, 189);
 @media (max-width: 820px) {
   .main {
     padding: 5px 0px;
-    
+  
   }
   .content {
     font-size: 12px;
@@ -118,6 +118,10 @@ background-color: rgb(255, 237, 189);
     
     width: 80%;
     
+  }
+  .list_container {
+    
+    padding-left: 5px;
   }
   
 }

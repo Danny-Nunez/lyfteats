@@ -18,6 +18,7 @@ const Protected = ({ children }) => {
     "/restaurant/signIn",
     "/restaurant/signUp",
     "/api-doc",
+    "/search"
   ];
 
   if (typeof window !== "undefined") {

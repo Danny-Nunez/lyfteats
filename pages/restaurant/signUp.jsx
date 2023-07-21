@@ -10,6 +10,7 @@ const SignUp = () => {
   const [error, setError] = useState({
     name: { error: "", isError: false },
     description: { error: "", isError: false },
+    address: { error: "", isError: false },
     email: { error: "", isError: false },
     password: { error: "", isError: false },
     confirmPassword: { error: "", isError: false },
@@ -17,6 +18,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    address: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -24,7 +26,6 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -32,7 +33,7 @@ const SignUp = () => {
     e.preventDefault();
 
     // Input validation
-    const { name, description, email, password, confirmPassword } = formData;
+    const { name, description, address, email, password, confirmPassword } = formData;
     let errors = false;
 
     // Validate empty inputs
@@ -58,6 +59,20 @@ const SignUp = () => {
       setError((prev) => ({
         ...prev,
         description: { error: "", isError: false },
+      }));
+    }
+
+    // Address
+    if (!address || address.trim() === "") {
+      errors = true;
+      setError((prev) => ({
+        ...prev,
+        address: { error: "Address is required", isError: true },
+      }));
+    } else {
+      setError((prev) => ({
+        ...prev,
+        address: { error: "", isError: false },
       }));
     }
 
@@ -138,13 +153,14 @@ const SignUp = () => {
       }));
     }
 
-    // Return if there's any errors
+    // Return if there are any errors
     if (errors) return;
 
     try {
       const res = await axios.post("/api/restaurant/", {
         name,
         description,
+        address,
         email,
         password,
       });
@@ -177,7 +193,7 @@ const SignUp = () => {
                   name="name"
                   placeholder="Restaurant Name..."
                   required
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   value={formData.name}
                 />
                 {error.name.isError && (
@@ -193,7 +209,7 @@ const SignUp = () => {
                   name="description"
                   placeholder="Description..."
                   required
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   value={formData.description}
                 />
                 {error.description.isError && (
@@ -202,6 +218,23 @@ const SignUp = () => {
                   </span>
                 )}
               </div>
+            </div>
+            <div className={styles.form_row}>
+              <label className={styles.form_label} htmlFor="address">
+                Address
+              </label>
+              <input
+                className={styles.form_input}
+                type="text"
+                name="address"
+                placeholder="Address..."
+                required
+                onChange={handleChange}
+                value={formData.address}
+              />
+              {error.address.isError && (
+                <span className={styles.error}>{error.address.error}</span>
+              )}
             </div>
             <div className={styles.form_row}>
               <label className={styles.form_label} htmlFor="email">
@@ -213,7 +246,7 @@ const SignUp = () => {
                 name="email"
                 placeholder="Email..."
                 required
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
                 value={formData.email}
               />
               {error.email.isError && (
@@ -231,7 +264,7 @@ const SignUp = () => {
                   name="password"
                   placeholder="Password..."
                   required
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   value={formData.password}
                 />
                 {error.password.isError && (
@@ -248,7 +281,7 @@ const SignUp = () => {
                   name="confirmPassword"
                   placeholder="Confirm Password..."
                   required
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   value={formData.confirmPassword}
                 />
                 {error.confirmPassword.isError && (
@@ -261,7 +294,7 @@ const SignUp = () => {
             <div>
               <button
                 className={styles.form_button}
-                onClick={(e) => handleSubmit(e)}
+                onClick={handleSubmit}
               >
                 Sign Up!
               </button>

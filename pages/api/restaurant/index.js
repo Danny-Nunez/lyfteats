@@ -28,6 +28,8 @@ import bcrypt from "bcrypt";
  *                type: string
  *              description:
  *                type: string
+ *              address:
+ *                type: string
  *              email:
  *                type: string
  *              password:
@@ -35,6 +37,7 @@ import bcrypt from "bcrypt";
  *            required:
  *              - name
  *              - description
+ *              - address
  *              - email
  *              - password
  *      responses:
@@ -56,16 +59,16 @@ export default async function handler(req, res) {
   }
 
   // Validate required fields
-  const { name, description, email, password } = req.body;
+  const { name, description, address, email, password } = req.body;
 
-  if (!name || !description || !email || !password) {
+  if (!name || !description || !address || !email || !password) {
     return res.status(400).json({
       message: "Missing required fields",
     });
   }
 
   try {
-    // Conenct to db
+    // Connect to the database
     await connectDb();
 
     // Validate duplicates
@@ -80,10 +83,11 @@ export default async function handler(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new restaurant
+    // Create a new restaurant
     const newRestaurant = await Restaurant.create({
       name,
       description,
+      address,
       email,
       password: hashedPassword,
       image: "",
@@ -100,3 +104,4 @@ export default async function handler(req, res) {
     });
   }
 }
+

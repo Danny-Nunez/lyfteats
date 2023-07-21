@@ -17,7 +17,7 @@ import verifyJwt from "../../../middlewares/verifyJWT";
  *  /api/restaurant/update:
  *    put:
  *      tags: [Restaurant]
- *      summary: Updates name and description of the restaurant
+ *      summary: Updates name, description, and address of the restaurant
  *      components:
  *        securitySchemes:
  *          cookieAuth:
@@ -36,9 +36,12 @@ import verifyJwt from "../../../middlewares/verifyJWT";
  *                type: string
  *              description:
  *                type: string
+ *              address:
+ *                type: string
  *            required:
  *              - name
  *              - description
+ *              - address
  *      responses:
  *        200:
  *          description: Restaurant updated successfully
@@ -67,9 +70,9 @@ const handler = async (req, res) => {
   }
 
   // Validate required fields
-  const { name, description } = req.body;
+  const { name, description, address } = req.body;
 
-  if (!name || !description) {
+  if (!name || !description || !address) {
     return res.status(400).json({
       message: "Missing required fields",
     });
@@ -90,6 +93,7 @@ const handler = async (req, res) => {
 
     targetRestaurant.name = name;
     targetRestaurant.description = description;
+    targetRestaurant.address = address;
     await targetRestaurant.save();
 
     return res.status(200).json({
@@ -105,3 +109,4 @@ const handler = async (req, res) => {
 };
 
 export default verifyJwt(handler, "Restaurant");
+

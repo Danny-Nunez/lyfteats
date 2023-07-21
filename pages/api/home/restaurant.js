@@ -59,7 +59,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Getl all restaurant dishes
+    // Get all restaurant dishes
     const dishes = await Dish.find({ restaurantId }).lean();
 
     // Prepare restaurant response
@@ -67,6 +67,7 @@ export default async function handler(req, res) {
       id: restaurantId,
       name: targetRestaurant.name,
       description: targetRestaurant.description,
+      address: targetRestaurant.address || "", // Include the address field
     };
 
     return res.status(200).json({
@@ -80,3 +81,4 @@ export default async function handler(req, res) {
     });
   }
 }
+

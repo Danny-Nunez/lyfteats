@@ -43,14 +43,23 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
         <div className={styles.logo_image}>
           {restaurantImage && (
             <Image 
-            width="150px"
-            height="150px"
+            width="180px"
+            height="180px"
             src={restaurantImage.replace("mitcapstone.", "")} alt="Restaurant Image" />
           )}
         </div>
         <div className={styles.titles}>
         <h1>Welcome to {restaurant.name}!</h1>
+        <div className={styles.logo_imageMobile}>
+          {restaurantImage && (
+            <Image 
+            width="180px"
+            height="180px"
+            src={restaurantImage.replace("mitcapstone.", "")} alt="Restaurant Image" />
+          )}
+        </div>
         <p>{restaurant.description}</p>
+        <p>{restaurant.address}</p>
         </div>
         </div>
         <h2>Our delicious dishes!</h2>
