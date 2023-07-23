@@ -4,7 +4,13 @@
   height: 100%;
   width: 80%;
 }
-
+.imageContainer {
+  max-width: 300px;
+  border-radius: 5px;
+}
+.imageContainer img{
+  border-radius: 5px;
+}
 .button {
   padding: 10px;
   color: white;

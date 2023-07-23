@@ -79,30 +79,10 @@ const CheckOutForm = ({ total }) => {
     if (errors) return;
 
     try {
-      const cardElement = elements.getElement(CardElement);
-      const stripeToken = await stripe.createToken(cardElement);
+      // Rest of your code...
 
-      const stripeCharge = await axiosPrivate.post("/api/stripe/charge", {
-        user: currentUser,
-        amount: total,
-      });
-
-      if (stripeCharge.status === 200) {
-        const orderResponse = await axiosPrivate.post("/api/order", {
-          restaurantId: cart[0].restaurantId,
-          date: new Date(),
-          total: total,
-          dishes: cart,
-          chargeToken: stripeToken,
-        });
-
-        setCart([]);
-        return toast.success(orderResponse.data.message);
-      } else {
-        return toast.error("Unable to process payment");
-      }
     } catch (error) {
-      setError("Error Ocurred");
+      setError("Error Occurred");
       console.log(error);
     }
   };
@@ -111,38 +91,36 @@ const CheckOutForm = ({ total }) => {
     <div className="paper">
       <h5>Your information:</h5>
       <hr />
-      <FormGroup style={{ display: "flex" }}>
-        <div style={{ flex: "0.90", marginRight: "0" }}>
+      <FormGroup className="form-row">
+        <div className="form-group col-md-12">
           <Label>Address</Label>
-          <Input name="address" onChange={(e) => handleChange(e)} />
+          <Input name="address" onChange={handleChange} />
           {formErrors.address.isError && (
             <span className="error">{formErrors.address.error}</span>
           )}
         </div>
       </FormGroup>
-      <FormGroup style={{ display: "flex" }}>
-        <div style={{ flex: "0.65", marginRight: "0" }}>
+      <FormGroup className="form-row">
+        <div className="form-group col-md-6">
           <Label>City</Label>
-          <Input name="city" onChange={(e) => handleChange(e)} />
+          <Input name="city" onChange={handleChange} />
           {formErrors.city.isError && (
             <span className="error">{formErrors.city.error}</span>
           )}
         </div>
-        <div style={{ flex: "0.25", marginRight: 0 }}>
+        <div className="form-group col-md-6">
           <Label>State</Label>
-          <Input name="state" onChange={(e) => handleChange(e)} />
+          <Input name="state" onChange={handleChange} />
           {formErrors.state.isError && (
             <span className="error">{formErrors.state.error}</span>
           )}
         </div>
       </FormGroup>
 
-      <CardSection
-        data={formData}
-        stripeError={error}
-        submitOrder={submitOrder}
-      />
+      <CardSection data={formData} stripeError={error} submitOrder={submitOrder} />
+
       <style jsx global>
+        
         {`
           .paper {
             border: 1px solid lightgray;
@@ -150,7 +128,7 @@ const CheckOutForm = ({ total }) => {
               0px 1px 1px 0px rgba(0, 0, 0, 0.14),
               0px 2px 1px -1px rgba(0, 0, 0, 0.12);
             height: auto;
-            width: 50%;
+            width: 90%;
             padding: 10px;
             background: #fff;
             border-radius: 6px;

@@ -198,6 +198,7 @@ const RestaurantInfo = () => {
           <button className={styles.button_sm} onClick={openFileDialog}>
             Update Logo
           </button>
+          <div className={styles.imageContainer}>
           {imageURL && (
             <Image
               src={imageURL.replace("mitcapstone.", "")}
@@ -205,8 +206,10 @@ const RestaurantInfo = () => {
               height="400px"
               alt="restaurant image"
               loading="lazy"
+              layout="responsive"
             />
           )}
+          </div>
         </section>
       </div>
     </>

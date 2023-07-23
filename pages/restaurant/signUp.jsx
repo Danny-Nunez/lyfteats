@@ -1,10 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import axios from "axios";
 import generalFormatter from "general-formatter";
 import styles from "../../styles/Forms.module.css";
 import { toast } from "react-toastify";
+
+const CONFIGURATION = {
+  mapsApiKey: process.env.REACT_APP_GOOGLE, 
+  capabilities: { addressAutocompleteControl: true },
+};
+
+function initMap(setFormData) {
+  const autocompleteInput = document.getElementById("location-input");
+  const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
+    fields: ["address_components", "geometry", "name"],
+    types: ["address"],
+  });
+
+  autocomplete.addListener("place_changed", function () {
+    const place = autocomplete.getPlace();
+    if (!place.geometry) {
+      // User entered the name of a Place that was not suggested and
+      // pressed the Enter key, or the Place Details request failed.
+      window.alert("No details available for input: '" + place.name + "'");
+      return;
+    }
+
+    // Fill in the address input field
+    fillInAddress(place);
+  });
+
+  function fillInAddress(place) {
+    const addressNameFormat = {
+      street_number: "short_name",
+      route: "long_name",
+      locality: "long_name",
+      administrative_area_level_1: "short_name",
+      country: "long_name",
+      postal_code: "short_name",
+    };
+    const getAddressComp = function (type) {
+      for (const component of place.address_components) {
+        if (component.types[0] === type) {
+          return component[addressNameFormat[type]];
+        }
+      }
+      return "";
+    };
+
+    const streetNumber = getAddressComp("street_number");
+    const route = getAddressComp("route");
+    const city = getAddressComp("locality");
+    const state = getAddressComp("administrative_area_level_1");
+    const postalCode = getAddressComp("postal_code");
+
+    // Combine the address components including zip code
+    const address = `${streetNumber} ${route}, ${city}, ${state} ${postalCode}`;
+
+    autocompleteInput.value = address;
+    
+    // Update the formData state with the selected address
+    setFormData((prev) => ({
+      ...prev,
+      address: address,
+    }));
+  }
+}
+
 
 const SignUp = () => {
   const [error, setError] = useState({
@@ -174,6 +237,13 @@ const SignUp = () => {
     }
   };
 
+  useEffect(() => {
+    // Call the initMap function when the component mounts
+    initMap(setFormData);
+  }, []);
+  
+  
+
   return (
     <div className={styles.form_upper_container}>
       <div className={styles.form_restaurant_signup_image}>
@@ -219,11 +289,14 @@ const SignUp = () => {
                 )}
               </div>
             </div>
+            
+
             <div className={styles.form_row}>
               <label className={styles.form_label} htmlFor="address">
                 Address
               </label>
               <input
+                id="location-input"
                 className={styles.form_input}
                 type="text"
                 name="address"
@@ -236,6 +309,7 @@ const SignUp = () => {
                 <span className={styles.error}>{error.address.error}</span>
               )}
             </div>
+
             <div className={styles.form_row}>
               <label className={styles.form_label} htmlFor="email">
                 Email
