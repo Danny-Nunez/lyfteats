@@ -94,13 +94,14 @@ const SignIn = () => {
   };
 
   return (
-    <div className={styles.form_upper_container}>
+    <div className={styles.form_upper_container2}>
       <div className={styles.form_restaurant_signin_image}>
-        <div className={styles.form_title_container}>
+        
+        <div className={styles.form_container2}>
+          <form className={styles.form}>
+          <div className={styles.form_title_container}>
           <span className={styles.form_title}>Restaurant Sign In</span>
         </div>
-        <div className={styles.form_container}>
-          <form className={styles.form}>
             <div className={styles.form_row}>
               <label className={styles.form_label} htmlFor="email">
                 Email

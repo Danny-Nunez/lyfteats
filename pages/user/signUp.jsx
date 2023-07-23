@@ -159,13 +159,14 @@ const SignInUser = () => {
   };
 
   return (
-    <div className={styles.form_upper_container}>
+    <div className={styles.form_upper_container2}>
       <div className={styles.form_user_signup_image}>
-        <div className={styles.form_title_container}>
+       
+        <div className={styles.form_container2}>
+          <form className={styles.form}>
+          <div className={styles.form_title_container}>
           <span className={styles.form_title}>User Sign Up</span>
         </div>
-        <div className={styles.form_container}>
-          <form className={styles.form}>
             <div className={styles.form_row_md}>
               <div className={styles.form_row}>
                 <label className={styles.form_label} htmlFor="firstName">
@@ -263,7 +264,7 @@ const SignInUser = () => {
                 className={styles.form_button}
                 onClick={(e) => handleSubmit(e)}
               >
-                Sign Up!
+                Submit
               </button>
             </div>
             <div>

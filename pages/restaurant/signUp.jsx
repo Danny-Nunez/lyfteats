@@ -247,11 +247,21 @@ const SignUp = () => {
   return (
     <div className={styles.form_upper_container}>
       <div className={styles.form_restaurant_signup_image}>
-        <div className={styles.form_title_container}>
+        
+        <div className={styles.form_container}>
+       
+          <form className={styles.form}>
+          <div className={styles.form_title_container}>
           <span className={styles.form_title}>Restaurant Sign Up</span>
         </div>
-        <div className={styles.form_container}>
-          <form className={styles.form}>
+        <div>
+              <p>
+                Already have an account?{" "}
+                <Link href="/restaurant/signIn">
+                  <span className={styles.form_hightlight}>Sign In here</span>
+                </Link>
+              </p>
+            </div>
             <div className={styles.form_row_md}>
               <div className={styles.form_row}>
                 <label className={styles.form_label} htmlFor="name">
@@ -366,25 +376,58 @@ const SignUp = () => {
               </div>
             </div>
             <div>
+            <span className={styles.form_crums}>By clicking "Submit", you agree to Lyft Eats Merchant Terms and
+             Conditions.</span>
+            </div>
+            <div>
               <button
                 className={styles.form_button}
                 onClick={handleSubmit}
               >
-                Sign Up!
+                Submit
               </button>
             </div>
-            <div>
-              <p>
-                Already have an account?{" "}
-                <Link href="/restaurant/signIn">
-                  <span className={styles.form_hightlight}>Sign In here</span>
-                </Link>
-              </p>
-            </div>
+            
           </form>
         </div>
+        <div>
       </div>
+      
+      </div>
+      <div className={styles.container}>
+      <div><p><h1 className={styles.subtitle}>Get to where you want to grow with Lyft Eats for restaurants, grocery, convenience, and more</h1></p></div>
+      {/* First column */}
+      <div className={styles.item}><span className={styles.subtext_title}>Attract new customers</span>
+      <p className={styles.subtext}>
+      Reach people in your local area across Uber’s rides and delivery network.
+      </p>
+      </div>
+      
+      
+
+      {/* Second column */}
+      <div className={styles.item}><span className={styles.subtext_title}>Boost your sales</span>
+      <p className={styles.subtext}>
+      Stand out with marketing tools, including ads and offers, that help drive more orders.
+      </p>
+      </div>
+      
+      
+
+      {/* Third column */}
+      <div className={styles.item}><span className={styles.subtext_title}>Operate with ease</span>
+      <p className={styles.subtext}>
+      Manage orders with easy-to-use operational tools, customer insights, and analytics.
+      </p>
+      </div>
+      
+      
     </div>
+      
+    
+    </div>
+
+    
   );
 };
 
