@@ -19,6 +19,7 @@ By offering this added functionality, users are empowered to experience the dyna
 - Create your Restaurant by signing up as a restaurant
 - Upload or edit your restaurant picture
 - Create, Edit and Delete Dishes. Including pictures and prices
+- Auto populate restaurant address when creating a restaurant.
 
 
 ## How to Run

@@ -2798,7 +2798,7 @@
     "has-property-descriptors" "^1.0.0"
     "object-keys" "^1.1.1"
 
-"delaunator@5":
+"delaunator@^5.0.0", "delaunator@5":
   "integrity" "sha512-AyLvtyJdbv/U1GkiS6gUUzclRoAY4Gs75qkMygJJhU75LW4DNuSF2RMzpxs9jw9Oz1BobHjTdkG3zdP55VxAqw=="
   "resolved" "https://registry.npmjs.org/delaunator/-/delaunator-5.0.0.tgz"
   "version" "5.0.0"
