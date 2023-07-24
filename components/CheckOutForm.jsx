@@ -7,6 +7,7 @@ import useAuth from "../hooks/useAuth";
 import CardSection from "./CardSection";
 import { toast } from "react-toastify";
 import styles from "../styles/FocusedOrder.module.css";
+import { useRouter } from "next/router";
 
 const CheckOutForm = ({ total }) => {
   const [formErrors, setFormErrors] = useState({
@@ -25,62 +26,41 @@ const CheckOutForm = ({ total }) => {
   const axiosPrivate = useAxiosPrivate();
   const { currentUser } = useAuth();
   const { cart, setCart } = useData();
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const submitOrder = async () => {
-    const { address, city, state } = formData;
-    let errors = false;
+    // ... existing code ...
+  };
 
-    // Validate address
-    if (!address || address.trim() === "") {
-      errors = true;
-      setFormErrors((prev) => ({
-        ...prev,
-        address: { error: "Address is required", isError: true },
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        address: { error: "", isError: false },
-      }));
-    }
-
-    // Validate city
-    if (!city || city.trim() === "") {
-      errors = true;
-      setFormErrors((prev) => ({
-        ...prev,
-        city: { error: "City is required", isError: true },
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        city: { error: "", isError: false },
-      }));
-    }
-
-    // Validate State
-    if (!state || state.trim() === "") {
-      errors = true;
-      setFormErrors((prev) => ({
-        ...prev,
-        state: { error: "State is required", isError: true },
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        state: { error: "", isError: false },
-      }));
-    }
-
-    if (errors) return;
-
+  const handlePaymentSuccess = async () => {
     try {
-      // Rest of your code...
+      const cardElement = elements.getElement(CardElement);
+      const stripeToken = await stripe.createToken(cardElement);
 
+      const stripeCharge = await axiosPrivate.post("/api/stripe/charge", {
+        user: currentUser,
+        amount: total,
+      });
+
+      if (stripeCharge.status === 200) {
+        const orderResponse = await axiosPrivate.post("/api/order", {
+          restaurantId: cart[0].restaurantId,
+          date: new Date(),
+          total: total,
+          dishes: cart,
+          chargeToken: stripeToken,
+        });
+
+        setCart([]);
+        toast.success(orderResponse.data.message);
+        router.push("/user/myOrders");
+      } else {
+        toast.error("Unable to process payment");
+      }
     } catch (error) {
       setError("Error Occurred");
       console.log(error);
@@ -117,7 +97,11 @@ const CheckOutForm = ({ total }) => {
         </div>
       </FormGroup>
 
-      <CardSection data={formData} stripeError={error} submitOrder={submitOrder} />
+      <CardSection
+        data={formData}
+        stripeError={error}
+        submitOrder={handlePaymentSuccess}
+      />
 
       <style jsx global>
         

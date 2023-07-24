@@ -6,8 +6,11 @@ import { ToastContainer } from "react-toastify";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import NextNProgress from 'nextjs-progressbar';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
   return (
     <>
       <AuthProvider>
