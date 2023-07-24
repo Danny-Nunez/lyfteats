@@ -42,6 +42,7 @@ S3_UPLOAD_KEY=<Your S3 key>
 S3_UPLOAD_SECRET=<Your S3 secret>
 S3_UPLOAD_BUCKET=<Your S3 bucket>
 S3_UPLOAD_REGION=<Your S3 bucket region>
+REACT_APP_GOOGLE=<Your Google maps API>
 ```
 
 Once you have set up the environment variables, you can safely run the application in your computer by running `npm run dev`. Then open [localhost:3000](http//localhost:3000) in your browser.
@@ -51,12 +52,12 @@ Once you have set up the environment variables, you can safely run the applicati
 - Framework: [NextJS](https://nextjs.org/)
 - Hosting Service: [Vercel](https://vercel.com/)
 - API Approach: [REST](https://aws.amazon.com/what-is/restful-api/)
-- API Documentation: Swagger. Visit [OrderQue API Docs](https://www.orderque.com/api-doc)
+- API Documentation: Swagger. Visit [Lyfteats API Docs](https://lyfteats.vercel.app/api-doc)
 - Database: [MongoDB](https://www.mongodb.com/)
 - Secondary Storage: [AWS S3](https://aws.amazon.com/s3/)
 - Payment Getaway: [Stripe](https://stripe.com/)
 - Authorization and Authentication: [JSON Web Tokens](https://jwt.io/)
 - Material UI: [MaterialUI](https://materialui/)
-- Important libraries: [@aws-sdk/client-s3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html), [stripe](https://stripe.com/docs/api), [mongoose](https://mongoosejs.com/), [cookies-next](https://www.npmjs.com/package/cookies-next), [next-swagger-doc](https://www.npmjs.com/package/next-swagger-doc), [general-formatter](https://www.npmjs.com/package/general-formatter)
+- Important libraries: [@aws-sdk/client-s3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html), [stripe](https://stripe.com/docs/api), [mongoose](https://mongoosejs.com/), [cookies-next](https://www.npmjs.com/package/cookies-next), [next-swagger-doc](https://www.npmjs.com/package/next-swagger-doc), [general-formatter](https://www.npmjs.com/package/general-formatter), [NextJS-ProgressBar](https://www.npmjs.com/package/nextjs-progressbar)
 
 
