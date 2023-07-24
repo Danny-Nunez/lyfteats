@@ -23,9 +23,13 @@ const SearchBar = ({ onSearch, onClear, list, placeholder }) => {
 
   const options =
     list.length > 0 ? (
-      list.map((item, index) => {
-        return <option key={index} value={item.name} id={item._id} />;
-      })
+      list
+        .filter((item) =>
+          item.name.toLowerCase().includes(search.toLowerCase())
+        )
+        .map((item, index) => {
+          return <option key={index} value={item.name} id={item._id} />;
+        })
     ) : (
       <option value="-- Nothing Found --" />
     );
@@ -61,4 +65,5 @@ const SearchBar = ({ onSearch, onClear, list, placeholder }) => {
 };
 
 export default SearchBar;
+
 

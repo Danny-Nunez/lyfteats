@@ -40,7 +40,7 @@ const About = () => {
     {
       name: "Important libraries",
       content:
-        "@aws-sdk/s3-client, mongoose, stripe, cookies-next, next-swagger-docs, general-formatter",
+        "@aws-sdk/s3-client, mongoose, stripe, cookies-next, next-swagger-docs, general-formatter, Material UI, Google Auto Coomplete, NextJS ProgressBar, React Gauge Chart",
     },
   ];
 
@@ -53,7 +53,7 @@ const About = () => {
         />
         <Article
           title="What can you do in Lyfteats?"
-          textContent={`My version of this project, is an extension of the original requirements, where a user cannot only sign up as a regular user, but also as a Restaurant. While logged in as a restaurant, the user has the capability to customize the dishes by adding, deleting, updating the images of the dishes or the restaurant itself. I based this approach on many other eCommerce solutions, where anyone can sign up, sell or buy. This creates a very dynamic marketplace, where you can experiment how is to have a functional business.`}
+          textContent={`My version of this project, is an extension of the original requirements, where a user cannot only sign up as a regular user, but also as a Restaurant. While logged in as a restaurant, the user has the capability to customize the dishes by adding, deleting, updating the images of the dishes or the restaurant itself. I based this approach on many other eCommerce solutions, where anyone can sign up, sell or buy. This creates a very dynamic marketplace, where you can experiment how is to have a functional business. The design is influenced by uber eats making it very user friendly.`}
         />
         <Article title="Tech Specs" listArray={specList} />
         <div className={styles.links_container}>
