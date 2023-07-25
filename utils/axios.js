@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://lyfteats.vercel.app";
+    : "https://danny-nunezfullstackrestaurantapplication.vercel.app/";
 
 export default axios.create({
   baseURL: BASE_URL,
