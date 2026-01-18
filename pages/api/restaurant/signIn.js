@@ -1,6 +1,6 @@
 import connectDb from "../../../config/connectDb";
 import Restaurant from "../../../models/restaurantModel";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 

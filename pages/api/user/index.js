@@ -1,6 +1,6 @@
 import connectDb from "../../../config/connectDb";
 import User from "../../../models/userModel";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 /**
  * @desc   User sign up endpoint
