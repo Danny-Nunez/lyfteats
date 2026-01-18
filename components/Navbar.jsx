@@ -86,8 +86,8 @@ const Navbar = () => {
           <Image
             src={isScrolledUp ? "/lyfeatlogowht.png" : "/lyfeatlogo.png"}
             alt="brand_logo"
-            width="150px"
-            height="45px"
+            width={150}
+            height={45}
           />
         </div>
         <div className={styles.navbar_menus}>

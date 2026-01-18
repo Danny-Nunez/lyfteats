@@ -54,22 +54,21 @@ git clone
 npm install
 ```
 
-Before running `npm run dev`, you will need the following environment variables:
+Before running `npm run dev`, create a `.env.local` file in the root directory with the following environment variables:
 
-```
-DB_URI=<This is your MongoDb URI>
-ACCESS_TOKEN_SECRET=<This is your access token secret>
-REFRESH_TOKEN_SECRET=<This is your refresh token secret>
-STRIPE_PUBLIC_KEY=<Your stripe public key>
-STRIPE_SECRET_KEY=<Your stripe secret key>
-S3_UPLOAD_KEY=<Your S3 key>
-S3_UPLOAD_SECRET=<Your S3 secret>
-S3_UPLOAD_BUCKET=<Your S3 bucket>
-S3_UPLOAD_REGION=<Your S3 bucket region>
-REACT_APP_GOOGLE=<Your Google maps API>
+```env
+DB_URI=mongodb+srv://username:password@cluster.mongodb.net/dbname?retryWrites=true&w=majority
+ACCESS_TOKEN_SECRET=your-random-secret-key-here
+REFRESH_TOKEN_SECRET=your-random-secret-key-here
+STRIPE_PUBLIC_KEY=pk_test_your_stripe_public_key
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+BLOB_READ_WRITE_TOKEN=vercel_blob_rw_your_token_here
+REACT_APP_GOOGLE=your_google_maps_api_key
 ```
 
-Once you have set up the environment variables, you can safely run the application in your computer by running `npm run dev`. Then open [localhost:3000](http//localhost:3000) in your browser.
+**Note:** This project has been migrated from AWS S3 to Vercel Blob Storage. See [SETUP_LOCAL.md](./SETUP_LOCAL.md) for detailed local setup instructions, or [VERCEL_DEPLOYMENT.md](../VERCEL_DEPLOYMENT.md) for deployment guide.
+
+Once you have set up the environment variables, you can safely run the application by running `npm run dev`. Then open [localhost:3000](http://localhost:3000) in your browser.
 
 ## Tech Specifications
 
@@ -77,11 +76,11 @@ Once you have set up the environment variables, you can safely run the applicati
 - Hosting Service: [Vercel](https://vercel.com/)
 - API Approach: [REST](https://aws.amazon.com/what-is/restful-api/)
 - API Documentation: Swagger. Visit [Lyfteats API Docs](https://lyfteats.vercel.app/api-doc)
-- Database: [MongoDB](https://www.mongodb.com/)
-- Secondary Storage: [AWS S3](https://aws.amazon.com/s3/)
-- Payment Getaway: [Stripe](https://stripe.com/)
+- Database: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- File Storage: [Vercel Blob Storage](https://vercel.com/docs/storage/vercel-blob)
+- Payment Gateway: [Stripe](https://stripe.com/) (test mode for demo)
 - Authorization and Authentication: [JSON Web Tokens](https://jwt.io/)
-- Material UI: [MaterialUI](https://materialui/)
-- Important libraries: [@aws-sdk/client-s3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html), [stripe](https://stripe.com/docs/api), [mongoose](https://mongoosejs.com/), [cookies-next](https://www.npmjs.com/package/cookies-next), [next-swagger-doc](https://www.npmjs.com/package/next-swagger-doc), [general-formatter](https://www.npmjs.com/package/general-formatter), [NextJS-ProgressBar](https://www.npmjs.com/package/nextjs-progressbar)
+- Material UI: [MaterialUI](https://mui.com/)
+- Important libraries: [@vercel/blob](https://vercel.com/docs/storage/vercel-blob), [stripe](https://stripe.com/docs/api), [mongoose](https://mongoosejs.com/), [cookies-next](https://www.npmjs.com/package/cookies-next), [next-swagger-doc](https://www.npmjs.com/package/next-swagger-doc), [general-formatter](https://www.npmjs.com/package/general-formatter), [NextJS-ProgressBar](https://www.npmjs.com/package/nextjs-progressbar)
 
 

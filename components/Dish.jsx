@@ -59,8 +59,8 @@ const Dish = ({ dishData, listSetter, onEdit }) => {
         {dishData?.image && (
         <Image
           src={dishData.image.replace('mitcapstone.', '')}
-          width="50px"
-          height="50px"
+          width={50}
+          height={50}
           loading="lazy"
           alt="Dish Image"
         />

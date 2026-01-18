@@ -10,8 +10,8 @@ const CartItem = ({ itemData }) => {
       <div className={styles.cart_item_image_container}>
         <Image
           src={itemData.image.replace('mitcapstone.', '')}
-          width="75px"
-          height="75px"
+          width={75}
+          height={75}
           loading="lazy"
           alt="Dish Image"
         />

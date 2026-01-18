@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Image from "next/image";
-import { useS3Upload } from "next-s3-upload";
+import useBlobUpload from "../hooks/useBlobUpload";
 import styles from "../styles/Admin.module.css";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,8 @@ const RestaurantInfo = () => {
     address: { error: "", isError: false },
   });
   const [imageURL, setImageURL] = useState("");
-  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  let { FileInput, openFileDialog, uploadToS3 } = useBlobUpload();
+  const fileInputRef = useRef(null);
   const axiosPrivate = useAxiosPrivate();
 
   // Load restaurant information
@@ -107,13 +108,23 @@ const RestaurantInfo = () => {
   };
 
   // Handle restaurant image update
-  const handleFileChange = async (file) => {
+  const handleFileChange = async (file, uploadResult = null) => {
     try {
-      // Upload image to S3 bucket
-      let s3Response = await uploadToS3(file);
-      setImageURL(s3Response.url);
+      // If uploadResult is provided (from FileInput), use it
+      // Otherwise, upload the file
+      let blobResponse = uploadResult;
+      if (!blobResponse && file) {
+        blobResponse = await uploadToS3(file);
+      }
 
-      // Delete previous image in S3
+      if (!blobResponse) {
+        toast.error("Failed to upload image");
+        return;
+      }
+
+      setImageURL(blobResponse.url);
+
+      // Delete previous image in Vercel Blob Storage
       const deleteRes = await axiosPrivate.delete(
         "/api/restaurant/deletePrevKey"
       );
@@ -121,13 +132,14 @@ const RestaurantInfo = () => {
       // If delete response is ok, then update the image URL and key in the database
       if (deleteRes.data.message === "OK") {
         const updateRes = await axiosPrivate.put("/api/restaurant/updateLogo", {
-          url: s3Response.url,
-          key: s3Response.key,
+          url: blobResponse.url,
+          key: blobResponse.key,
         });
         return toast.success(updateRes.data.message);
       }
     } catch (error) {
       console.log("Error:", error.message);
+      toast.error("Could not update logo");
     }
   };
 
@@ -194,19 +206,32 @@ const RestaurantInfo = () => {
           <label className={styles.label} htmlFor="logo">
             Logo
           </label>
-          <FileInput onChange={handleFileChange} />
-          <button className={styles.button_sm} onClick={openFileDialog}>
+          <FileInput
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+          <button
+            className={styles.button_sm}
+            onClick={() => {
+              if (fileInputRef.current) {
+                fileInputRef.current.click();
+              } else {
+                openFileDialog();
+              }
+            }}
+          >
             Update Logo
           </button>
           <div className={styles.imageContainer}>
           {imageURL && (
             <Image
-              src={imageURL.replace("mitcapstone.", "")}
-              width="300px"
-              height="400px"
+              src={imageURL}
+              width={300}
+              height={400}
               alt="restaurant image"
               loading="lazy"
-              layout="responsive"
+              style={{ width: '100%', height: 'auto' }}
             />
           )}
           </div>

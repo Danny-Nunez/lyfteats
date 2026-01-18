@@ -218,8 +218,8 @@ const Burger = () => {
         onClick={toggleDrawer('left', true)}
       >
     <Image
-            width="25px"
-            height="25px"
+            width={25}
+            height={25}
             src={isScrolledUp ? "/hamburgerwhite.svg" : "/hamburger.svg"} alt="Restaurant Image" />
       </Button>
       <Drawer anchor="left" open={state.left} onClose={toggleDrawer('left', false)}>

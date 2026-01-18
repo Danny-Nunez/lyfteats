@@ -52,8 +52,8 @@ const CardDish = ({ dishData, restaurantData }) => {
         {dishData?.image && (
           <Image
             src={dishData.image.replace("mitcapstone.", "")}
-            width="150px"
-            height="150px"
+            width={150}
+            height={150}
             loading="lazy"
             alt="Dish Image"
           />

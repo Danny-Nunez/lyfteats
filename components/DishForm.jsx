@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useS3Upload } from "next-s3-upload";
+import React, { useState, useEffect, useRef } from "react";
+import useBlobUpload from "../hooks/useBlobUpload";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import styles from "../styles/DishForm.module.css";
 
 const DishForm = ({ formToggler, listSetter, dishObject }) => {
-  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  let { FileInput, openFileDialog, uploadToS3 } = useBlobUpload();
+  const fileInputRef = useRef(null);
   const axiosPrivate = useAxiosPrivate();
   const [isNewImage, setIsNewImage] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -37,17 +38,25 @@ const DishForm = ({ formToggler, listSetter, dishObject }) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleFileChange = async (file) => {
+  const handleFileChange = async (file, uploadResult = null) => {
     try {
-      let s3Response = await uploadToS3(file);
-      setFormData((prev) => ({
-        ...prev,
-        image: s3Response.url,
-        awsKey: s3Response.key,
-      }));
+      // If uploadResult is provided (from FileInput), use it
+      // Otherwise, upload the file
+      let blobResponse = uploadResult;
+      if (!blobResponse && file) {
+        blobResponse = await uploadToS3(file);
+      }
 
-      if (isEdit) {
-        setIsNewImage(true);
+      if (blobResponse) {
+        setFormData((prev) => ({
+          ...prev,
+          image: blobResponse.url,
+          awsKey: blobResponse.key,
+        }));
+
+        if (isEdit) {
+          setIsNewImage(true);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -244,16 +253,29 @@ const DishForm = ({ formToggler, listSetter, dishObject }) => {
         {error.image.isError && (
           <span className={styles.error}>{error.image.error}</span>
         )}
-        <FileInput onChange={handleFileChange} />
-        <button className={styles.button} onClick={openFileDialog}>
+        <FileInput
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          accept="image/*"
+        />
+        <button
+          className={styles.button}
+          onClick={() => {
+            if (fileInputRef.current) {
+              fileInputRef.current.click();
+            } else {
+              openFileDialog();
+            }
+          }}
+        >
           Update Dish Image
         </button>
         <div>
           {formData.image && (
             <Image
-              src={formData.image.replace('mitcapstone.', '')}
-              width="250px"
-              height="250px"
+              src={formData.image}
+              width={250}
+              height={250}
               loading="lazy"
               alt="Dish Image"
             />

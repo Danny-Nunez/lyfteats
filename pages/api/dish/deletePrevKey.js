@@ -1,8 +1,7 @@
 import connectDb from "../../../config/connectDb";
 import Dish from "../../../models/dishModel";
 import verifyJwt from "../../../middlewares/verifyJWT";
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { S3Client } from "@aws-sdk/client-s3";
+import { del } from "@vercel/blob";
 
 /**
  * @desc   Delete aws key
@@ -79,30 +78,26 @@ const handler = async (req, res) => {
       });
     }
 
-    // Delete previous image in aws bucket
+    // Delete previous image in Vercel Blob Storage
     const targetKey = targetDish.awsKey;
 
-    let s3Data;
-    if (targetKey !== "") {
-      const s3Client = new S3Client({
-        region: process.env.S3_UPLOAD_REGION,
-        credentials: {
-          secretAccessKey: process.env.S3_UPLOAD_SECRET,
-          accessKeyId: process.env.S3_UPLOAD_KEY,
-        },
-      });
-
-      const bucketParams = {
-        Bucket: process.env.S3_UPLOAD_BUCKET,
-        Key: targetKey,
-      };
-
-      s3Data = await s3Client.send(new DeleteObjectCommand(bucketParams));
+    let blobData;
+    if (targetKey && targetKey !== "") {
+      try {
+        // Construct full URL from key or use the stored image URL
+        const blobUrl = targetDish.image || `https://${process.env.VERCEL_BLOB_STORE_ID}.public.blob.vercel-storage.com${targetKey}`;
+        blobData = await del(blobUrl, {
+          token: process.env.BLOB_READ_WRITE_TOKEN,
+        });
+      } catch (error) {
+        // If deletion fails, log but don't fail the request
+        console.error("Error deleting blob:", error);
+      }
     }
 
     return res.status(200).json({
       message: "OK",
-      s3Data,
+      blobData,
     });
   } catch (error) {
     return res.status(500).json({
