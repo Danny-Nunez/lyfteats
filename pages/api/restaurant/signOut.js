@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   // Verify cookies
   const cookies = req.cookies;
 
-  if (!cookie?.jwt) {
+  if (!cookies?.token) {
     return res.status(204).end();
   }
 
@@ -55,17 +55,18 @@ export default async function handler(req, res) {
 
     // Get target User
     const targetRestaurant = await Restaurant.findOne({
-      refreshToken: cookies.jwt,
+      refreshToken: cookies.token,
     }).exec();
 
     if (!targetRestaurant) {
+      const isProduction = process.env.NODE_ENV === "production";
       res.setHeader(
         "Set-Cookie",
-        cookie.serialize("jwt", "", {
+        cookie.serialize("token", "", {
           httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-          maxAge: new Date(0),
+          secure: isProduction,
+          sameSite: isProduction ? "strict" : "lax",
+          maxAge: 0, // Expire immediately
           path: "/",
         })
       );
@@ -77,13 +78,14 @@ export default async function handler(req, res) {
     await targetRestaurant.save();
 
     // Remove cookie in client
+    const isProduction = process.env.NODE_ENV === "production";
     res.setHeader(
       "Set-Cookie",
-      cookie.serialize("jwt", "", {
+      cookie.serialize("token", "", {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: new Date(0),
+        secure: isProduction,
+        sameSite: isProduction ? "strict" : "lax",
+        maxAge: 0, // Expire immediately
         path: "/",
       })
     );

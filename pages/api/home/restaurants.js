@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       restaurants.length > 0
         ? restaurants.map((res) => {
             return {
-              _id: res._id,
+              _id: res._id ? res._id.toString() : "",
               name: res.name,
               description: res.description,
               address: res.address || "", // Include the address field

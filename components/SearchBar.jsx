@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import styles from "../styles/Forms.module.css";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 
-const SearchBar = ({ onSearch, onClear, list, placeholder }) => {
+const SearchBar = ({ onSearch, onClear, list = [], placeholder = "Search..." }) => {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -13,22 +13,25 @@ const SearchBar = ({ onSearch, onClear, list, placeholder }) => {
 
   const handleClear = () => {
     if (search === "") return;
-    onClear();
+    if (onClear) onClear();
     setSearch("");
   };
 
   const handleSearch = () => {
-    router.push(`/search?query=${search}`);
+    if (!search || search.trim() === "") {
+      return;
+    }
+    router.push(`/search?query=${encodeURIComponent(search)}`);
   };
 
   const options =
-    list.length > 0 ? (
+    list && list.length > 0 ? (
       list
         .filter((item) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
+          item && item.name && item.name.toLowerCase().includes(search.toLowerCase())
         )
         .map((item, index) => {
-          return <option key={index} value={item.name} id={item._id} />;
+          return <option key={item._id || index} value={item.name} />;
         })
     ) : (
       <option value="-- Nothing Found --" />

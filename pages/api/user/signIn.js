@@ -102,13 +102,15 @@ export default async function handler(req, res) {
     await targetUser.save();
 
     // Set cookie
+    // In production, use secure: true. In development, allow HTTP
+    const isProduction = process.env.NODE_ENV === "production";
     res.setHeader(
       "Set-Cookie",
       cookie.serialize("token", refreshToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
+        secure: isProduction, // Only use secure in production (HTTPS)
+        sameSite: isProduction ? "strict" : "lax", // Lax allows cookies in development
+        maxAge: 24 * 60 * 60, // 1 day in seconds
         path: "/",
       })
     );

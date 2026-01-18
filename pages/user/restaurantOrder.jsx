@@ -83,40 +83,73 @@ const RestaurantOrder = ({ restaurant, dishes, restaurantImage }) => {
 export default RestaurantOrder;
 
 export async function getServerSideProps(context) {
-  const { restaurantId } = context.query;
-  const api =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://danny-nunezfullstackrestaurantapplication.vercel.app/";
+  try {
+    const { restaurantId } = context.query;
 
-  const restaurantResponse = await fetch(
-    `${api}/api/home/restaurant?restaurantId=${restaurantId}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+    if (!restaurantId) {
+      return {
+        props: {
+          restaurant: null,
+          dishes: [],
+          restaurantImage: null,
+        },
+      };
     }
-  );
-  const restaurantData = await restaurantResponse.json();
-  const restaurant = restaurantData.restaurant;
-  const dishes = restaurantData.dishes;
 
-  const imageResponse = await fetch(`${api}/api/home/restaurants`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  const imageData = await imageResponse.json();
-  const matchingRestaurant = imageData.restaurants.find(
-    (r) => r._id === restaurantId
-  );
-  const restaurantImage = matchingRestaurant ? matchingRestaurant.image : null;
+    // Import database connection and models directly
+    const connectDb = (await import("../../config/connectDb")).default;
+    const Restaurant = (await import("../../models/restaurantModel")).default;
+    const Dish = (await import("../../models/dishModel")).default;
 
-  return {
-    props: {
-      restaurant,
-      dishes,
-      restaurantImage,
-    },
-  };
+    // Connect to database
+    await connectDb();
+
+    // Get restaurant
+    const targetRestaurant = await Restaurant.findById(restaurantId).lean();
+
+    if (!targetRestaurant) {
+      return {
+        props: {
+          restaurant: null,
+          dishes: [],
+          restaurantImage: null,
+        },
+      };
+    }
+
+    // Get all restaurant dishes
+    const dishes = await Dish.find({ restaurantId }).lean();
+
+    // Prepare restaurant response
+    const restaurant = {
+      id: restaurantId,
+      name: targetRestaurant.name,
+      description: targetRestaurant.description,
+      address: targetRestaurant.address || "",
+    };
+
+    const restaurantImage = targetRestaurant.image || null;
+
+    return {
+      props: {
+        restaurant,
+        dishes: dishes.map((dish) => ({
+          ...dish,
+          _id: dish._id ? dish._id.toString() : "",
+        })),
+        restaurantImage,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching restaurant order data:", error);
+    return {
+      props: {
+        restaurant: null,
+        dishes: [],
+        restaurantImage: null,
+      },
+    };
+  }
 }
 
 

@@ -96,9 +96,13 @@ const handler = async (req, res) => {
     targetRestaurant.address = address;
     await targetRestaurant.save();
 
+    // Convert to plain object and serialize ObjectIds
+    const restaurantData = targetRestaurant.toObject();
+    restaurantData._id = restaurantData._id ? restaurantData._id.toString() : "";
+
     return res.status(200).json({
       message: "Restaurant updated successfully",
-      restaurant: targetRestaurant,
+      restaurant: restaurantData,
     });
   } catch (error) {
     return res.status(500).json({

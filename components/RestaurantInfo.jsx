@@ -139,7 +139,8 @@ const RestaurantInfo = () => {
       }
     } catch (error) {
       console.log("Error:", error.message);
-      toast.error("Could not update logo");
+      const errorMessage = error.message || "Could not update logo";
+      toast.error(errorMessage);
     }
   };
 

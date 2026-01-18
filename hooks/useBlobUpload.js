@@ -14,7 +14,7 @@ export const useBlobUpload = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await axios.post("/api/s3-upload", formData, {
+      const response = await axios.post("/api/blob-upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -26,7 +26,15 @@ export const useBlobUpload = () => {
       };
     } catch (error) {
       console.error("Upload error:", error);
-      throw error;
+      
+      // Extract and throw a more helpful error message
+      const errorMessage = error.response?.data?.message || 
+                          error.message || 
+                          "Failed to upload image. Please check your configuration.";
+      
+      const uploadError = new Error(errorMessage);
+      uploadError.originalError = error;
+      throw uploadError;
     } finally {
       setUploading(false);
     }

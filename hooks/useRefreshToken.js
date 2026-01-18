@@ -24,12 +24,22 @@ const useRefreshToken = () => {
   }
 
   const refresh = async () => {
-    const response = await axios.get(endpoint, {
-      withCredentials: true,
-    });
+    try {
+      const response = await axios.get(endpoint, {
+        withCredentials: true,
+      });
 
-    setAuth((prev) => ({ ...prev, accessToken: response.data.accessToken }));
-    return response.data.accessToken;
+      if (response.data?.accessToken) {
+        setAuth((prev) => ({ ...prev, accessToken: response.data.accessToken }));
+        return response.data.accessToken;
+      }
+      throw new Error("No access token in response");
+    } catch (error) {
+      console.error("Refresh token error:", error.response?.data || error.message);
+      // If refresh fails, clear auth state
+      setAuth((prev) => ({ ...prev, accessToken: null }));
+      throw error;
+    }
   };
 
   return refresh;

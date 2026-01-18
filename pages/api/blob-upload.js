@@ -15,9 +15,9 @@ export const config = {
 
 /**
  * @desc   Upload file to Vercel Blob Storage
- * @route  POST /api/s3-upload
+ * @route  POST /api/blob-upload
  * @method POST
- * @access Public (handled by next-s3-upload compatibility)
+ * @access Public
  * @param {import("next").NextApiRequest} req
  * @param {import("next").NextApiResponse} res
  */
@@ -68,7 +68,7 @@ const handler = async (req, res) => {
       console.warn("Failed to delete temp file:", unlinkError);
     }
 
-    // Return response compatible with next-s3-upload format
+    // Return response compatible with next-s3-upload format for backward compatibility
     return res.status(200).json({
       url: blob.url,
       key: blob.pathname,
@@ -84,11 +84,23 @@ const handler = async (req, res) => {
     }
 
     console.error("Upload error:", error);
+    
+    // Provide more helpful error messages
+    let errorMessage = "Server Error";
+    if (error.message?.includes("BlobStoreNotFoundError") || error.message?.includes("This store does not exist")) {
+      errorMessage = "Vercel Blob Storage is not configured. Please set BLOB_READ_WRITE_TOKEN in environment variables.";
+    } else if (error.message?.includes("BLOB_READ_WRITE_TOKEN")) {
+      errorMessage = "Missing BLOB_READ_WRITE_TOKEN. Please configure Vercel Blob Storage.";
+    } else {
+      errorMessage = error.message || "Upload failed";
+    }
+
     return res.status(500).json({
-      message: "Server Error",
-      error: error.message,
+      message: errorMessage,
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };
 
 export default handler;
+

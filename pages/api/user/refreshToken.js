@@ -66,8 +66,9 @@ export default async function handler(req, res) {
     const targetUser = await User.findOne({ refreshToken }).exec();
 
     if (!targetUser) {
+      console.error("User not found with refresh token");
       return res.status(403).json({
-        message: "Unable to authenticate",
+        message: "Unable to authenticate - user not found",
       });
     }
 
@@ -76,15 +77,27 @@ export default async function handler(req, res) {
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       (err, decoded) => {
-        if (err || targetUser.id !== decoded.id) {
+        if (err) {
+          console.error("JWT verification error:", err.message);
           return res.status(403).json({
-            message: "Unable to authenticate",
+            message: "Unable to authenticate - invalid token",
+          });
+        }
+
+        // Ensure IDs are strings for comparison
+        const userId = targetUser._id ? targetUser._id.toString() : targetUser.id;
+        const decodedId = decoded.id ? decoded.id.toString() : decoded.id;
+
+        if (userId !== decodedId) {
+          console.error("ID mismatch - user:", userId, "decoded:", decodedId);
+          return res.status(403).json({
+            message: "Unable to authenticate - ID mismatch",
           });
         }
 
         // Create new access token
         const accessToken = jwt.sign(
-          { id: decoded.id },
+          { id: decodedId },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "15m" }
         );

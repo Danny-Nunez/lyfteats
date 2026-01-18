@@ -62,12 +62,13 @@ export default async function handler(req, res) {
     // Get token from cookies
     const refreshToken = cookies.token;
 
-    // Get target user
+    // Get target restaurant
     const targetRestaurant = await Restaurant.findOne({ refreshToken }).exec();
 
     if (!targetRestaurant) {
+      console.error("Restaurant not found with refresh token");
       return res.status(403).json({
-        message: "Unable to authenticate",
+        message: "Unable to authenticate - restaurant not found",
       });
     }
 
@@ -76,15 +77,27 @@ export default async function handler(req, res) {
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET,
       (err, decoded) => {
-        if (err || targetRestaurant.id !== decoded.id) {
+        if (err) {
+          console.error("JWT verification error:", err.message);
           return res.status(403).json({
-            message: "Unable to authenticate",
+            message: "Unable to authenticate - invalid token",
+          });
+        }
+
+        // Ensure IDs are strings for comparison
+        const restaurantId = targetRestaurant._id ? targetRestaurant._id.toString() : targetRestaurant.id;
+        const decodedId = decoded.id ? decoded.id.toString() : decoded.id;
+
+        if (restaurantId !== decodedId) {
+          console.error("ID mismatch - restaurant:", restaurantId, "decoded:", decodedId);
+          return res.status(403).json({
+            message: "Unable to authenticate - ID mismatch",
           });
         }
 
         // Create new access token
         const accessToken = jwt.sign(
-          { id: decoded.id },
+          { id: decodedId },
           process.env.ACCESS_TOKEN_SECRET,
           { expiresIn: "15m" }
         );

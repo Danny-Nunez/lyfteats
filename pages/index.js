@@ -63,22 +63,42 @@ export default function Home({ restaurants }) {
   );
 }
 
-export async function getServerSideProps() {
-  const api =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://danny-nunezfullstackrestaurantapplication.vercel.app/";
-  const response = await fetch(`${api}/api/home/restaurants`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
+export async function getServerSideProps(context) {
+  try {
+    // Import database connection and model directly
+    const connectDb = (await import("../config/connectDb")).default;
+    const Restaurant = (await import("../models/restaurantModel")).default;
 
-  const data = await response.json();
-  const restaurants = data.restaurants;
+    // Connect to database
+    await connectDb();
 
-  return {
-    props: {
-      restaurants,
-    },
-  };
+    // Get restaurants directly from database
+    const restaurants = await Restaurant.find().lean();
+
+    const filteredRestaurants =
+      restaurants.length > 0
+        ? restaurants.map((res) => {
+            return {
+              _id: res._id ? res._id.toString() : "",
+              name: res.name,
+              description: res.description,
+              address: res.address || "",
+              image: res.image || "",
+            };
+          })
+        : [];
+
+    return {
+      props: {
+        restaurants: filteredRestaurants,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching restaurants:", error);
+    return {
+      props: {
+        restaurants: [],
+      },
+    };
+  }
 }

@@ -1,9 +1,11 @@
 import axios from "axios";
 
+// Use relative URLs in production to avoid CORS issues
+// This works because the API routes are in the same Next.js app
 const BASE_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
-    : "https://danny-nunezfullstackrestaurantapplication.vercel.app/";
+    : ""; // Empty string means relative URLs - same origin
 
 export default axios.create({
   baseURL: BASE_URL,

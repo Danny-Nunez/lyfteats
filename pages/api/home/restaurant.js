@@ -70,9 +70,16 @@ export default async function handler(req, res) {
       address: targetRestaurant.address || "", // Include the address field
     };
 
+    // Convert ObjectIds to strings for JSON serialization
+    const serializedDishes = dishes.map((dish) => ({
+      ...dish,
+      _id: dish._id ? dish._id.toString() : "",
+      restaurantId: dish.restaurantId ? dish.restaurantId.toString() : "",
+    }));
+
     return res.status(200).json({
       restaurant,
-      dishes,
+      dishes: serializedDishes,
     });
   } catch (error) {
     return res.status(500).json({

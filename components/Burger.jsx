@@ -146,13 +146,11 @@ const Burger = () => {
       <List>
         {currentUser && accountType === 'Restaurant' && (
           <ListItemButton>
-            <Link href="/restaurant/admin">
-              <a>
-                <div className={styles.burger_link}>
-                  <DashboardIcon />
-                  <span>Profile</span>
-                </div>
-              </a>
+            <Link href="/restaurant/admin" className={styles.burger_link}>
+              <div className={styles.burger_link}>
+                <DashboardIcon />
+                <span>Profile</span>
+              </div>
             </Link>
           </ListItemButton>
         )}

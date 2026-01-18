@@ -60,7 +60,8 @@ const DishForm = ({ formToggler, listSetter, dishObject }) => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Could not upload image");
+      const errorMessage = error.message || "Could not upload image";
+      toast.error(errorMessage);
     }
   };
 

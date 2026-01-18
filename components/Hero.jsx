@@ -3,13 +3,17 @@ import Link from "next/link";
 import styles from "../styles/Hero.module.css";
 import SearchBar from "../components/SearchBar";
 
-const Hero = ({ title, subtitle, buttonText, restaurants }) => {
+const Hero = ({ title, subtitle, buttonText, restaurants = [] }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null);
 
   const handleSearch = () => {
     if (searchQuery === "" || !searchQuery) {
       setSearchResult(null);
+      return;
+    }
+
+    if (!restaurants || restaurants.length === 0) {
       return;
     }
 
@@ -26,7 +30,7 @@ const Hero = ({ title, subtitle, buttonText, restaurants }) => {
             <SearchBar
               onSearch={handleSearch}
               onClear={() => setSearchQuery("")}
-              list={restaurants}
+              list={restaurants || []}
               placeholder="Search for a restaurant..."
             />
           </div>

@@ -58,7 +58,7 @@ const handler = async (req, res) => {
     await connectDb();
 
     // Get restaurant data
-    const targetRestaurant = await Restaurant.findById(restaurantId).exec();
+    const targetRestaurant = await Restaurant.findById(restaurantId).lean();
 
     if (!targetRestaurant) {
       return res.status(404).json({
@@ -66,8 +66,14 @@ const handler = async (req, res) => {
       });
     }
 
+    // Convert ObjectIds to strings for JSON serialization
+    const restaurantData = {
+      ...targetRestaurant,
+      _id: targetRestaurant._id ? targetRestaurant._id.toString() : "",
+    };
+
     return res.status(200).json({
-      restaurant: targetRestaurant,
+      restaurant: restaurantData,
     });
   } catch (error) {
     return res.status(500).json({

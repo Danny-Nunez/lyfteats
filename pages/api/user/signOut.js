@@ -58,13 +58,14 @@ export default async function handler(req, res) {
     const targetUSer = await User.findOne({ refreshToken: jwt }).exec();
 
     if (!targetUSer) {
+      const isProduction = process.env.NODE_ENV === "production";
       res.setHeader(
         "Set-Cookie",
         cookie.serialize("token", "", {
           httpOnly: true,
-          secure: true,
-          sameSite: "strict",
-          maxAge: new Date(0),
+          secure: isProduction,
+          sameSite: isProduction ? "strict" : "lax",
+          maxAge: 0, // Expire immediately
           path: "/",
         })
       );
@@ -76,13 +77,14 @@ export default async function handler(req, res) {
     await targetUSer.save();
 
     // Remove cookie in client
+    const isProduction = process.env.NODE_ENV === "production";
     res.setHeader(
       "Set-Cookie",
       cookie.serialize("token", "", {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: new Date(0),
+        secure: isProduction,
+        sameSite: isProduction ? "strict" : "lax",
+        maxAge: 0, // Expire immediately
         path: "/",
       })
     );
