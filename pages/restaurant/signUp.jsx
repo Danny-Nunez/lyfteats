@@ -7,64 +7,80 @@ import styles from "../../styles/Forms.module.css";
 import { toast } from "react-toastify";
 
 const CONFIGURATION = {
-  mapsApiKey: process.env.REACT_APP_GOOGLE, 
+  mapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.REACT_APP_GOOGLE, 
   capabilities: { addressAutocompleteControl: true },
 };
 
 function initMap(setFormData) {
   const autocompleteInput = document.getElementById("location-input");
-  const autocomplete = new google.maps.places.Autocomplete(autocompleteInput, {
-    fields: ["address_components", "geometry", "name"],
-    types: ["address"],
-  });
+  
+  // Safety check - ensure Google Maps is fully loaded
+  if (!window.google || !window.google.maps || !window.google.maps.places) {
+    console.error('Google Maps Places API is not available');
+    return;
+  }
 
-  autocomplete.addListener("place_changed", function () {
-    const place = autocomplete.getPlace();
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'");
-      return;
-    }
+  if (!autocompleteInput) {
+    console.error('Location input element not found');
+    return;
+  }
 
-    // Fill in the address input field
-    fillInAddress(place);
-  });
+  try {
+    const autocomplete = new window.google.maps.places.Autocomplete(autocompleteInput, {
+      fields: ["address_components", "geometry", "name"],
+      types: ["address"],
+    });
 
-  function fillInAddress(place) {
-    const addressNameFormat = {
-      street_number: "short_name",
-      route: "long_name",
-      locality: "long_name",
-      administrative_area_level_1: "short_name",
-      country: "long_name",
-      postal_code: "short_name",
-    };
-    const getAddressComp = function (type) {
-      for (const component of place.address_components) {
-        if (component.types[0] === type) {
-          return component[addressNameFormat[type]];
-        }
+    autocomplete.addListener("place_changed", function () {
+      const place = autocomplete.getPlace();
+      if (!place.geometry) {
+        // User entered the name of a Place that was not suggested and
+        // pressed the Enter key, or the Place Details request failed.
+        window.alert("No details available for input: '" + place.name + "'");
+        return;
       }
-      return "";
-    };
 
-    const streetNumber = getAddressComp("street_number");
-    const route = getAddressComp("route");
-    const city = getAddressComp("locality");
-    const state = getAddressComp("administrative_area_level_1");
-    const postalCode = getAddressComp("postal_code");
+      // Fill in the address input field
+      fillInAddress(place);
+    });
 
-    // Combine the address components including zip code
-    const address = `${streetNumber} ${route}, ${city}, ${state} ${postalCode}`;
+    function fillInAddress(place) {
+      const addressNameFormat = {
+        street_number: "short_name",
+        route: "long_name",
+        locality: "long_name",
+        administrative_area_level_1: "short_name",
+        country: "long_name",
+        postal_code: "short_name",
+      };
+      const getAddressComp = function (type) {
+        for (const component of place.address_components) {
+          if (component.types[0] === type) {
+            return component[addressNameFormat[type]];
+          }
+        }
+        return "";
+      };
 
-    autocompleteInput.value = address;
-    
-    // Update the formData state with the selected address
-    setFormData((prev) => ({
-      ...prev,
-      address: address,
-    }));
+      const streetNumber = getAddressComp("street_number");
+      const route = getAddressComp("route");
+      const city = getAddressComp("locality");
+      const state = getAddressComp("administrative_area_level_1");
+      const postalCode = getAddressComp("postal_code");
+
+      // Combine the address components including zip code
+      const address = `${streetNumber} ${route}, ${city}, ${state} ${postalCode}`;
+
+      autocompleteInput.value = address;
+      
+      // Update the formData state with the selected address
+      setFormData((prev) => ({
+        ...prev,
+        address: address,
+      }));
+    }
+  } catch (error) {
+    console.error('Error initializing Google Maps Autocomplete:', error);
   }
 }
 
@@ -238,8 +254,74 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    // Call the initMap function when the component mounts
-    initMap(setFormData);
+    // Load Google Maps API dynamically
+    const loadGoogleMaps = () => {
+      // Check if Google Maps is already loaded with places library
+      if (window.google && window.google.maps && window.google.maps.places) {
+        initMap(setFormData);
+        return;
+      }
+
+      // Check if script is already being loaded
+      const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+      if (existingScript) {
+        // Wait for it to load completely
+        const checkGoogle = setInterval(() => {
+          if (window.google && window.google.maps && window.google.maps.places) {
+            clearInterval(checkGoogle);
+            initMap(setFormData);
+          }
+        }, 100);
+        
+        // Timeout after 10 seconds
+        setTimeout(() => {
+          clearInterval(checkGoogle);
+          if (!window.google || !window.google.maps || !window.google.maps.places) {
+            console.error('Google Maps API failed to load within timeout');
+          }
+        }, 10000);
+        return;
+      }
+
+      // Load the script
+      const script = document.createElement('script');
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.REACT_APP_GOOGLE;
+      
+      if (!apiKey) {
+        console.error('Google Maps API key is not set');
+        return;
+      }
+
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        // Wait a bit more to ensure places library is ready
+        const checkPlaces = setInterval(() => {
+          if (window.google && window.google.maps && window.google.maps.places) {
+            clearInterval(checkPlaces);
+            initMap(setFormData);
+          }
+        }, 50);
+        
+        // Timeout after 5 seconds
+        setTimeout(() => {
+          clearInterval(checkPlaces);
+          if (!window.google || !window.google.maps || !window.google.maps.places) {
+            console.error('Google Maps Places library failed to load');
+          }
+        }, 5000);
+      };
+      script.onerror = () => {
+        console.error('Failed to load Google Maps API');
+      };
+      document.head.appendChild(script);
+    };
+
+    // Only load if the location input exists
+    if (document.getElementById("location-input")) {
+      loadGoogleMaps();
+    }
   }, []);
   
   

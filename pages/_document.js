@@ -5,12 +5,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* Add the Google Maps API script tag here */}
-          <script
-            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE}&libraries=places&callback=initMap`}
-            async
-            defer
-          ></script>
+          {/* Google Maps API - loaded dynamically when needed */}
+          {/* Removed global loading to avoid initMap callback issues */}
         </Head>
         <body>
           <Main />

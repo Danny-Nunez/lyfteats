@@ -72,20 +72,16 @@ const Burger = () => {
           {!currentUser && (
             <>
               <List>
-                <Link href="/user/signIn">
-                  <button className={styles.burger_link_button_login}>
-                    <a>
-                      <span>Login</span>
-                    </a>
-                  </button>
-                </Link>
-                <Link href="/user/signUp">
-                  <button className={styles.burger_link_button}>
-                    <a>
-                      <span>Signup</span>
-                    </a>
-                  </button>
-                </Link>
+                <ListItemButton>
+                  <Link href="/user/signIn" className={styles.burger_link_button_login}>
+                    <span>Login</span>
+                  </Link>
+                </ListItemButton>
+                <ListItemButton>
+                  <Link href="/user/signUp" className={styles.burger_link_button}>
+                    <span>Signup</span>
+                  </Link>
+                </ListItemButton>
               </List>
             </>
           )}
@@ -97,34 +93,28 @@ const Burger = () => {
           </ListItemButton>
         )}
         <ListItemButton>
-          <Link href="/">
-            <a>
-              <div className={styles.burger_link}>
-                <HomeIcon />
-                <span>Home</span>
-              </div>
-            </a>
+          <Link href="/" className={styles.burger_link}>
+            <div className={styles.burger_link}>
+              <HomeIcon />
+              <span>Home</span>
+            </div>
           </Link>
         </ListItemButton>
         <ListItemButton>
-          <Link href="/about">
-            <a>
-              <div className={styles.burger_link}>
-                <InfoIcon />
-                <span>About</span>
-              </div>
-            </a>
+          <Link href="/about" className={styles.burger_link}>
+            <div className={styles.burger_link}>
+              <InfoIcon />
+              <span>About</span>
+            </div>
           </Link>
         </ListItemButton>
         {currentUser && accountType === 'User' && (
           <ListItemButton>
-            <Link href="/user/myOrders">
-              <a>
-                <div className={styles.burger_link}>
-                  <ReceiptLongIcon />
-                  <span>My Orders</span>
-                </div>
-              </a>
+            <Link href="/user/myOrders" className={styles.burger_link}>
+              <div className={styles.burger_link}>
+                <ReceiptLongIcon />
+                <span>My Orders</span>
+              </div>
             </Link>
           </ListItemButton>
         )}
@@ -135,23 +125,19 @@ const Burger = () => {
           <span className={styles.burger_restMenu}>Restaurant Menu Options</span>
           <List>
             <ListItemButton>
-              <Link href="/restaurant/signIn">
-                <a>
-                  <div className={styles.burger_link}>
-                    <PersonIcon />
-                    <span>Business Login</span>
-                  </div>
-                </a>
+              <Link href="/restaurant/signIn" className={styles.burger_link}>
+                <div className={styles.burger_link}>
+                  <PersonIcon />
+                  <span>Business Login</span>
+                </div>
               </Link>
             </ListItemButton>
             <ListItemButton>
-              <Link href="/restaurant/signUp">
-                <a>
-                  <div className={styles.burger_link}>
-                    <AddHomeIcon />
-                    <span>Restaurant Signup</span>
-                  </div>
-                </a>
+              <Link href="/restaurant/signUp" className={styles.burger_link}>
+                <div className={styles.burger_link}>
+                  <AddHomeIcon />
+                  <span>Restaurant Signup</span>
+                </div>
               </Link>
             </ListItemButton>
           </List>
@@ -172,38 +158,32 @@ const Burger = () => {
         )}
         {currentUser && accountType === 'Restaurant' && (
           <ListItemButton>
-            <Link href="/restaurant/admindishes">
-              <a>
-                <div className={styles.burger_link}>
-                  <FastfoodIcon />
-                  <span>Dishes</span>
-                </div>
-              </a>
+            <Link href="/restaurant/admindishes" className={styles.burger_link}>
+              <div className={styles.burger_link}>
+                <FastfoodIcon />
+                <span>Dishes</span>
+              </div>
             </Link>
           </ListItemButton>
         )}
         {currentUser && accountType === 'Restaurant' && (
           <ListItemButton>
-            <Link href="/restaurant/storeOrders">
-              <a>
-                <div className={styles.burger_link}>
-                  <ReceiptLongIcon />
-                  <span>Orders</span>
-                </div>
-              </a>
+            <Link href="/restaurant/storeOrders" className={styles.burger_link}>
+              <div className={styles.burger_link}>
+                <ReceiptLongIcon />
+                <span>Orders</span>
+              </div>
             </Link>
           </ListItemButton>
         )}
 
         {currentUser ? (
           <ListItemButton onClick={handleSignOut}>
-            <Link href="/">
-              <a>
-                <div className={styles.burger_link}>
-                  <LogoutIcon />
-                  <span>Log Out</span>
-                </div>
-              </a>
+            <Link href="/" className={styles.burger_link}>
+              <div className={styles.burger_link}>
+                <LogoutIcon />
+                <span>Log Out</span>
+              </div>
             </Link>
           </ListItemButton>
         ) : null}

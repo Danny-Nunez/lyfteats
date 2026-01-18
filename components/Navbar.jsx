@@ -97,31 +97,29 @@ const Navbar = () => {
             {user === "" ? (
               <>
                 <li className={styles.navbar_menu}>
-                  <Link href="/user/signUp">
-                    <button
-                      className={`${styles.navbar_button_login} ${
-                        isScrolledUp ? styles.button_black : ""
-                      }`}
-                    >
-                      <div className={styles.navbar_button_icon}>
-                        <CreateIcon />
-                        <a>Sign Up</a>
-                      </div>
-                    </button>
+                  <Link
+                    href="/user/signUp"
+                    className={`${styles.navbar_button_login} ${
+                      isScrolledUp ? styles.button_black : ""
+                    }`}
+                  >
+                    <div className={styles.navbar_button_icon}>
+                      <CreateIcon />
+                      <span>Sign Up</span>
+                    </div>
                   </Link>
                 </li>
                 <li className={styles.navbar_menu}>
-                  <Link href="/user/signIn">
-                    <button
-                      className={`${styles.navbar_button_login} ${
-                        isScrolledUp ? styles.button_black : ""
-                      }`}
-                    >
-                      <div className={styles.navbar_button_icon}>
-                        <PersonIcon />
-                        <a>Log In</a>
-                      </div>
-                    </button>
+                  <Link
+                    href="/user/signIn"
+                    className={`${styles.navbar_button_login} ${
+                      isScrolledUp ? styles.button_black : ""
+                    }`}
+                  >
+                    <div className={styles.navbar_button_icon}>
+                      <PersonIcon />
+                      <span>Log In</span>
+                    </div>
                   </Link>
                 </li>
               </>

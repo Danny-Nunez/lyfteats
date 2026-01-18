@@ -59,16 +59,19 @@ const About = () => {
         <div className={styles.links_container}>
           <span>
             Check out the GitHub Repo:{" "}
-            <Link href="https://github.com/Danny-Nunez/lyfteats">
-              <a className={styles.link} rel="noreferrer" target="_blank">
-                HERE
-              </a>
+            <Link 
+              href="https://github.com/Danny-Nunez/lyfteats" 
+              className={styles.link} 
+              rel="noreferrer" 
+              target="_blank"
+            >
+              HERE
             </Link>
           </span>
           <span>
             Check out the API Documentation:{" "}
-            <Link href="/api-doc">
-              <a className={styles.link}>HERE</a>
+            <Link href="/api-doc" className={styles.link}>
+              HERE
             </Link>
           </span>
         </div>
