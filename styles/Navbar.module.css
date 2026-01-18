@@ -126,10 +126,12 @@
   grid-template-columns: repeat(2, 1fr);
   background-color: #000;
   border-radius: 50%; /* Set the horizontal and vertical radii */
+  color: white;
 }
 
 .cart_quantity {
   font-size: 0.95rem;
+  color: white;
 }
 
 .mobile_navbar_container {
@@ -142,6 +144,7 @@
 
 .navbar_icon {
   font-size: 1.7rem;
+  color: white;
 }
 
 .line {
