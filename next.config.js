@@ -14,6 +14,15 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    // Fix for remarkable/linkify directory import issue with Next.js 14
+    // This is a known issue with next-swagger-doc dependency
+    config.resolve.extensionAlias = {
+      ".js": [".js", ".ts", ".tsx"],
+    };
+
+    return config;
+  },
 };
 
 module.exports = nextConfig;
