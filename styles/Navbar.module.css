@@ -1,11 +1,12 @@
-.navbar.scrolled .navbar_button_login,
-.navbar.scrolled .navbar_button_login a {
-  color: black;
+/* Only apply black color when button_black class is explicitly added */
+.navbar.scrolled .navbar_button_login.button_black,
+.navbar.scrolled .navbar_button_login.button_black a {
+  color: black !important;
 }
 
-.navbar.scrolled_button .navbar_button_login,
-.navbar.scrolled_button .navbar_button_login a {
-  color: black;
+.navbar.scrolled_button .navbar_button_login.button_black,
+.navbar.scrolled_button .navbar_button_login.button_black a {
+  color: black !important;
 }
 
 .burger_wrap {
@@ -29,6 +30,13 @@
 }
 .navbar a {
   color: rgb(0, 0, 0);
+}
+
+/* Ensure button links inherit button color - override navbar link color */
+.navbar_button_login,
+.navbar_button_login > *,
+.navbar_button_login a {
+  color: white !important;
 }
 
 .navbar.scrolled {
@@ -78,9 +86,25 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
+  color: white; /* Default white text for buttons */
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
 }
 .navbar.button_black {
   color: black;
+}
+
+/* When scrolled, buttons should have black text */
+.navbar.scrolled .navbar_button_login.button_black,
+.navbar.scrolled .navbar_button_login.button_black > *,
+.navbar.scrolled .navbar_button_login.button_black span,
+.navbar.scrolled .navbar_button_login.button_black svg,
+.navbar.scrolled .navbar_button_login.button_black a {
+  color: black !important;
+}
+
+.navbar_button_icon svg,
+.navbar_button_icon span {
+  color: inherit;
 }
 
 .navbar_button_icon {
@@ -142,7 +166,7 @@
   display: none;
 }
 
-.navbar_icon {
+.cart_container .navbar_icon {
   font-size: 1.7rem;
   color: white;
 }
